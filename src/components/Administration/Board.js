@@ -41,7 +41,7 @@ const Board = () => {
         : [...prevSelected, group]
     );
   };
-
+  
   const filteredData = useSearchData(data, filter, selectedGroups);
   console.log("filteredData", filteredData);
 

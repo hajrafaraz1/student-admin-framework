@@ -18,7 +18,6 @@ const useDeleteData = () => {
       console.error("Deletion request failed:", error);
     }
   };
-
   return { deleteData };
 };
 
