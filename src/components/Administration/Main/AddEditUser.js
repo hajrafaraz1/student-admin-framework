@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { studyGroups } from "./constants.js";
-import useCreateData from "./Hooks/useCreateData";
-import useUpdateData from "./Hooks/useUpdateData";
+import useCreateData from "../Hooks/useCreateData";
+import useUpdateData from "../Hooks/useUpdateData";
+import { studyGroups } from "../constants/constants";
 
 const AddEditUser = ({
   selectedStudent,

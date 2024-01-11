@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./style.css";
-import AddEditUser from "./AddEditUser";
-import useSearchData from "./Hooks/useSearchData.js";
-import useDeleteData from "./Hooks/useDeleteData";
-import { URL } from "./constants.js";
+import "../Ui/style.css";
+import AddEditUser from "./AddEditUser.js";
+import useSearchData from "../Hooks/useSearchData.js";
+import useDeleteData from "../Hooks/useDeleteData.js";
+import { URL } from "../constants/constants.js";
 
 const Board = () => {
   const [data, setData] = useState([]);
