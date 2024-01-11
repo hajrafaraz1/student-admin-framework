@@ -13,11 +13,11 @@ const useUpdateData = () => {
       if (response.ok) {
         console.log("Update successful");
         const updatedData = await response.json();
-        setData((previousData) =>
-          previousData.map((item) =>
-            item.id === updatedData.id ? { ...item, ...updatedData } : item
-          )
-        );
+      setData((previousData) =>
+        previousData.map((item) =>
+          item.id === updatedData.id ? { ...item, ...updatedData } : item
+        )
+      );
       } else {
         console.error("Update request failed:", response.statusText);
       }

@@ -5,8 +5,10 @@
       "gender": "Female",
       "place": "lahore",
       "groups": [
+        "BackEnd",
+        "FrontEnd",
         "Typography",
-        "FrontEnd"
+        "UIUX"
       ],
       "id": 1
     },
@@ -15,8 +17,9 @@
       "gender": "Female",
       "place": "lahore",
       "groups": [
-        "BackEnd",
-        "UIUX"
+        "FrontEnd",
+        "Typography",
+        "BackEnd"
       ],
       "id": 2
     },
@@ -31,24 +34,33 @@
       "id": 3
     },
     {
-      "name": "person1",
-      "gender": "Male",
-      "place": "rwp",
+      "name": "Person3",
+      "gender": "Female",
+      "place": "Multan",
       "groups": [
-        "WebDesigner",
-        "Typography"
+        "BackEnd",
+        "WebDesigner"
       ],
       "id": 4
     },
     {
-      "name": "person2",
+      "name": "Hajra Faraz",
       "gender": "Female",
-      "place": "lahore",
+      "place": "islamabad",
       "groups": [
-        "FrontEnd",
-        "UIUX"
+        "UIUX",
+        "WebDesigner"
       ],
       "id": 5
+    },
+    {
+      "name": "person2",
+      "gender": "Male",
+      "place": "islamabad",
+      "groups": [
+        "FrontEnd"
+      ],
+      "id": 6
     }
   ]
 }

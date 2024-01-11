@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { studyGroups } from "./constants.js";
-import useCreateData from "./useCreateData";
-import useUpdateData from "./useUpdateData";
+import useCreateData from "./Hooks/useCreateData";
+import useUpdateData from "./Hooks/useUpdateData";
 
 const AddEditUser = ({
   selectedStudent,
@@ -24,13 +24,21 @@ const AddEditUser = ({
 
   const handleCheckboxChange = (group) => {
     setInputs((prevInputs) => {
+      console.log("prevInputs:", prevInputs);
+
       const updatedGroups = Array.isArray(prevInputs.groups)
         ? prevInputs.groups.includes(group)
           ? prevInputs.groups.filter((selected) => selected !== group)
           : [...prevInputs.groups, group]
         : [group];
 
-      return { ...prevInputs, groups: updatedGroups };
+      console.log("updatedGroups:", updatedGroups);
+
+      // Ensure to spread the rest of the properties from prevInputs
+      const updatedInputs = { ...prevInputs, groups: updatedGroups };
+      console.log("updatedInputs:", updatedInputs);
+
+      return updatedInputs;
     });
   };
 

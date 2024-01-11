@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import AddEditUser from "./AddEditUser";
-import useSearchData from "./useSearchData.js";
-import useDeleteData from "./useDeleteData";
+import useSearchData from "./Hooks/useSearchData.js";
+import useDeleteData from "./Hooks/useDeleteData";
 import { URL } from "./constants.js";
 
 const Board = () => {
@@ -41,14 +41,14 @@ const Board = () => {
         : [...prevSelected, group]
     );
   };
-  
+
   const filteredData = useSearchData(data, filter, selectedGroups);
   console.log("filteredData", filteredData);
 
   const modifiedStudentGroups = filteredData.map((data) => {
     return {
       ...data,
-      groups: data.groups.join(", "),
+      groups: Array.isArray(data.groups) ? data.groups.join(", ") : data.groups,
     };
   });
 
