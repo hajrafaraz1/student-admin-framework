@@ -5,10 +5,9 @@
       "gender": "Female",
       "place": "lahore",
       "groups": [
-        "BackEnd",
+        "WebDesigner",
         "FrontEnd",
-        "Typography",
-        "UIUX"
+        "Typography"
       ],
       "id": 1
     },

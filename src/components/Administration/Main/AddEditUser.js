@@ -34,7 +34,6 @@ const AddEditUser = ({
 
       console.log("updatedGroups:", updatedGroups);
 
-      // Ensure to spread the rest of the properties from prevInputs
       const updatedInputs = { ...prevInputs, groups: updatedGroups };
       console.log("updatedInputs:", updatedInputs);
 
