@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { studyGroups } from "./constants.js";
+import useCreateData from "./useCreateData";
+import useUpdateData from "./useUpdateData";
 
 const AddEditUser = ({
   selectedStudent,
@@ -16,15 +19,8 @@ const AddEditUser = ({
   });
 
   const [validationError, setValidationError] = useState(null);
-
-  const studyGroups = [
-    "GroupA",
-    "GroupB",
-    "GroupC",
-    "GroupD",
-    "GroupE",
-    "GroupF",
-  ];
+  const { createData } = useCreateData();
+  const { updateData } = useUpdateData();
 
   const handleCheckboxChange = (group) => {
     setInputs((prevInputs) => {
@@ -50,8 +46,6 @@ const AddEditUser = ({
       setValidationError("Please fill in all the required fields.");
       return;
     }
-
-    // Additional validation logic for the gender and place fields
     const lettersRegex = /^[a-zA-Z]+$/;
 
     if (!lettersRegex.test(inputs.gender)) {
@@ -66,49 +60,15 @@ const AddEditUser = ({
     setValidationError(null);
 
     if (isAddMode) {
-      const response = await fetch(`http://localhost:3001/tableData`, {
-        method: "POST",
-        body: JSON.stringify({
-          name: `${inputs.name}`,
-          gender: `${inputs.gender}`,
-          place: `${inputs.place}`,
-          groups: `${inputs.groups}`,
-        }),
-        headers: {
-          "content-type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        setData((previous) => {
-          return [...previous, inputs];
-        });
-      }
-    } else if (selectedStudent.id) {
-      const response = await fetch(
+      await createData(`http://localhost:3001/tableData`, inputs, setData);
+    } else {
+      console.log("Before updateData call");
+      await updateData(
         `http://localhost:3001/tableData/${selectedStudent.id}`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({
-            name: `${inputs.name}`,
-            gender: `${inputs.gender}`,
-            place: `${inputs.place}`,
-            groups: `${inputs.groups}`,
-          }),
-          headers: {
-            "content-type": "application/json",
-          },
-        }
+        inputs,
+        setData
       );
-
-      if (response.ok) {
-        setData((previousData) => {
-          const updatedData = previousData.map((item) =>
-            item.id === inputs.id ? { ...item, ...inputs } : item
-          );
-          return updatedData;
-        });
-      }
+      console.log("After updateData call");
     }
     setIsModalOpen(false);
     setInputs({

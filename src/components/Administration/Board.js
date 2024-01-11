@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import AddEditUser from "./AddEditUser";
-import { URL } from "./config";
+import useSearchData from "./useSearchData.js";
+import useDeleteData from "./useDeleteData";
+import { URL } from "./constants.js";
 
 const Board = () => {
   const [data, setData] = useState([]);
@@ -9,7 +11,7 @@ const Board = () => {
   const [selectedStudent, setSelectedStudent] = React.useState(null);
   const [filter, setFilter] = React.useState("");
   const [selectedGroups, setSelectedGroups] = React.useState([]);
-
+  const { deleteData } = useDeleteData();
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(URL);
@@ -28,14 +30,8 @@ const Board = () => {
     setSelectedStudent(null);
   };
 
-  const deleteStudentHandler = async (DataId) => {
-    const response = await fetch(` http://localhost:3001/tableData/${DataId}`, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      const afterDeletingData = data.filter((val) => val.id !== DataId);
-      setData(afterDeletingData);
-    }
+  const handleDelete = async (dataId) => {
+    await deleteData("http://localhost:3001/tableData", dataId, setData);
   };
 
   const handleCheckboxChange = (group) => {
@@ -46,24 +42,14 @@ const Board = () => {
     );
   };
 
-  const filteredData = data.filter((student) => {
-    const fields = Object.values(student).map((field) =>
-      field.toString().toLowerCase()
-    );
+  const filteredData = useSearchData(data, filter, selectedGroups);
+  console.log("filteredData", filteredData);
 
-    const matchesSearch = fields.some((field) =>
-      field.includes(filter.toLowerCase())
-    );
-
-    const matchesGroups =
-      selectedGroups.length === 0 ||
-      selectedGroups.some((selectedGroup) =>
-        Array.isArray(student.groups)
-          ? student.groups.includes(selectedGroup)
-          : (student.groups || "").split(",").includes(selectedGroup)
-      );
-    console.log("matchesgroup", selectedGroups);
-    return matchesSearch && matchesGroups;
+  const modifiedStudentGroups = filteredData.map((data) => {
+    return {
+      ...data,
+      groups: data.groups.join(", "),
+    };
   });
 
   const getHighlightedText = (text, highlight) => {
@@ -132,19 +118,24 @@ const Board = () => {
 
           <div className="filter">
             <p style={{ backgroundColor: "white" }}> FILTER BY GROUP : </p>
-            {["GroupA", "GroupB", "GroupC", "GroupD", "GroupE", "GroupF"].map(
-              (group) => (
-                <div key={group}>
-                  <input
-                    type="checkbox"
-                    value={group}
-                    checked={selectedGroups.includes(group)}
-                    onChange={() => handleCheckboxChange(group)}
-                  />
-                  {group}
-                </div>
-              )
-            )}
+            {[
+              "Typography",
+              "FrontEnd",
+              "BackEnd",
+              "WebDesigner",
+              "UIUX",
+              "AndroidDeveloper",
+            ].map((group) => (
+              <div key={group}>
+                <input
+                  type="checkbox"
+                  value={group}
+                  checked={selectedGroups.includes(group)}
+                  onChange={() => handleCheckboxChange(group)}
+                />
+                {group}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -161,7 +152,7 @@ const Board = () => {
             </tr>
           </div>
           <div className="table_container">
-            {filteredData.map((student, key) => {
+            {modifiedStudentGroups.map((student, key) => {
               return (
                 <tr key={key}>
                   <td>{getHighlightedText(student.id, filter)}</td>
@@ -171,19 +162,25 @@ const Board = () => {
                   <td>{getHighlightedText(student.groups, filter)}</td>
                   <td>
                     <button
+                      style={{
+                        borderRadius: "5px",
+                      }}
                       className="editbutton"
                       onClick={() => {
                         setSelectedStudent(student);
                         openUsermodal();
                       }}
                     >
-                      UPDATE
+                      Update
                     </button>
                     <button
+                      style={{
+                        borderRadius: "5px",
+                      }}
                       className="deletebutton"
-                      onClick={() => deleteStudentHandler(student.id)}
+                      onClick={() => handleDelete(student.id)}
                     >
-                      DELETE
+                      Delete
                     </button>
                   </td>
                 </tr>
